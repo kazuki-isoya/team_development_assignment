@@ -31,7 +31,7 @@ class AgendasController < ApplicationController
       @agenda.destroy
         redirect_to dashboard_url, notice: "アジェンダ「#{@agenda}」を削除しました。"
       else
-        redirect_to :back, notice: "アジェンダ「#{@agenda}」の削除に失敗しました。"
+        redirect_to dashboard_url, notice: "アジェンダ「#{@agenda}」の削除に失敗しました。"
     end
   end
 
