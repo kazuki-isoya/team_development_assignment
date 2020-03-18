@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update destroy switch_owner]
 
   def index
     @teams = Team.all
@@ -35,6 +35,16 @@ class TeamsController < ApplicationController
     else
       flash.now[:error] = I18n.t('views.messages.failed_to_save_team')
       render :edit
+    end
+  end
+
+#オーナーの変更
+  def switch_owner
+    if @team.update(owner_id: params[:owner_id])
+      SwitchOwnerMailer.switch_owner_mail(@team).deliver
+      redirect_to team_url, notice: 'リーダー権限を移動しました。'
+    else
+      redirect_to team_url, notice: 'リーダー権限の移動に失敗しました。'
     end
   end
 
