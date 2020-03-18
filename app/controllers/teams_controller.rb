@@ -41,6 +41,7 @@ class TeamsController < ApplicationController
 #オーナーの変更
   def switch_owner
     if @team.update(owner_id: params[:owner_id])
+      SwitchOwnerMailer.switch_owner_mail(@team).deliver
       redirect_to team_url, notice: 'リーダー権限を移動しました。'
     else
       redirect_to team_url, notice: 'リーダー権限の移動に失敗しました。'
